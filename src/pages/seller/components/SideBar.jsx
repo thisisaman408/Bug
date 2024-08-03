@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Divider, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from "react-router-dom";
 
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -12,8 +12,9 @@ import { useSelector } from 'react-redux';
 
 const SideBar = () => {
 
-    
-
+    // bug fix 
+    const { pathname } = useLocation();
+    // bug  -> change location.pathname to pathname 
     const { currentRole } = useSelector(state => state.user);
 
     return (
@@ -21,29 +22,29 @@ const SideBar = () => {
             <React.Fragment>
                 <ListItemButton
                     component={Link} to="/"
-                    sx={(location.pathname === "/" || location.pathname === "/Seller/dashboard") ? styles.currentStyle : styles.normalStyle}
+                    sx={(pathname === "/" || pathname === "/Seller/dashboard") ? styles.currentStyle : styles.normalStyle}
                 >
                     <ListItemIcon>
-                        <WidgetsIcon sx={{ color: (location.pathname === "/" || location.pathname === "/Seller/dashboard") ? '#4d1c9c' : 'inherit' }} />
+                        <WidgetsIcon sx={{ color: (pathname === "/" || pathname === "/Seller/dashboard") ? '#4d1c9c' : 'inherit' }} />
                     </ListItemIcon>
                     <ListItemText primary="Home" />
                 </ListItemButton>
 
                 <ListItemButton
                     component={Link} to="/Seller/products"
-                    sx={location.pathname.startsWith('/Seller/products') ? styles.currentStyle : styles.normalStyle}
+                    sx={pathname.startsWith('/Seller/products') ? styles.currentStyle : styles.normalStyle}
                 >
                     <ListItemIcon>
-                        <ShoppingCartIcon sx={{ color: location.pathname.startsWith('/Seller/products') ? '#4d1c9c' : 'inherit' }} />
+                        <ShoppingCartIcon sx={{ color: pathname.startsWith('/Seller/products') ? '#4d1c9c' : 'inherit' }} />
                     </ListItemIcon>
                     <ListItemText primary="Products" />
                 </ListItemButton>
                 <ListItemButton
                     component={Link} to="/Seller/orders"
-                    sx={location.pathname.startsWith('/Seller/orders') ? styles.currentStyle : styles.normalStyle}
+                    sx={pathname.startsWith('/Seller/orders') ? styles.currentStyle : styles.normalStyle}
                 >
                     <ListItemIcon>
-                        <PendingActionsIcon sx={{ color: location.pathname.startsWith("/Seller/orders") ? '#4d1c9c' : 'inherit' }} />
+                        <PendingActionsIcon sx={{ color: pathname.startsWith("/Seller/orders") ? '#4d1c9c' : 'inherit' }} />
                     </ListItemIcon>
                     <ListItemText primary="Orders" />
                 </ListItemButton>
@@ -51,10 +52,10 @@ const SideBar = () => {
                     currentRole === "Shopcart" &&
                     <ListItemButton
                         component={Link} to="/Seller/shopcart"
-                        sx={location.pathname.startsWith('/Seller/shopcart') ? styles.currentStyle : styles.normalStyle}
+                        sx={pathname.startsWith('/Seller/shopcart') ? styles.currentStyle : styles.normalStyle}
                     >
                         <ListItemIcon>
-                            <AdminPanelSettingsIcon sx={{ color: location.pathname.startsWith("/Seller/shopcart") ? '#4d1c9c' : 'inherit' }} />
+                            <AdminPanelSettingsIcon sx={{ color: pathname.startsWith("/Seller/shopcart") ? '#4d1c9c' : 'inherit' }} />
                         </ListItemIcon>
                         <ListItemText primary="Shopcart" />
                     </ListItemButton>
@@ -64,19 +65,19 @@ const SideBar = () => {
             <React.Fragment>
                 <ListItemButton
                     component={Link} to="/Seller/profile"
-                    sx={location.pathname.startsWith('/Seller/profile') ? styles.currentStyle : styles.normalStyle}
+                    sx={pathname.startsWith('/Seller/profile') ? styles.currentStyle : styles.normalStyle}
                 >
                     <ListItemIcon>
-                        <AccountCircleIcon sx={{ color: location.pathname.startsWith("/Seller/profile") ? '#4d1c9c' : 'inherit' }} />
+                        <AccountCircleIcon sx={{ color: pathname.startsWith("/Seller/profile") ? '#4d1c9c' : 'inherit' }} />
                     </ListItemIcon>
                     <ListItemText primary="Profile" />
                 </ListItemButton>
                 <ListItemButton
                     component={Link} to="/logout"
-                    sx={location.pathname.startsWith('/logout') ? styles.currentStyle : styles.normalStyle}
+                    sx={pathname.startsWith('/logout') ? styles.currentStyle : styles.normalStyle}
                 >
                     <ListItemIcon>
-                        <LogoutIcon sx={{ color: location.pathname.startsWith("/logout") ? '#4d1c9c' : 'inherit' }} />
+                        <LogoutIcon sx={{ color: pathname.startsWith("/logout") ? '#4d1c9c' : 'inherit' }} />
                     </ListItemIcon>
                     <ListItemText primary="Logout" />
                 </ListItemButton>

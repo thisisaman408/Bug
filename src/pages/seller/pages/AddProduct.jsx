@@ -46,6 +46,8 @@ const AddProduct = () => {
   const submitHandler = (event) => {
     event.preventDefault();
     console.log(fields);
+    // bug 
+    dispatch(addStuff(fields));
   };
 
   useEffect(() => {

@@ -10,9 +10,7 @@ import { useParams } from 'react-router-dom';
 import { fetchProductDetailsFromCart } from '../../../redux/userSlice';
 
 const OrderSummary = ({ handleNext, handleBack }) => {
-
     const dispatch = useDispatch();
-
     const params = useParams();
     const productID = params.id;
 
@@ -21,12 +19,13 @@ const OrderSummary = ({ handleNext, handleBack }) => {
     React.useEffect(() => {
         if (productID) {
             dispatch(fetchProductDetailsFromCart(productID));
-        }else
-            return(handleNext)
-    }, [productID, dispatch]);
+        } else {
+            handleNext(); // bug fix: Ensure handleNext is called properly
+        }
+    }, [productID, dispatch, handleNext]);
 
-    let cartDetails = currentUser.cartDetails;
-    let shippingData = currentUser.shippingData;
+    let cartDetails = currentUser.cartDetails || []; // bug fix: Default empty array if cartDetails is undefined
+    let shippingData = currentUser.shippingData || {}; // bug fix: Default empty object if shippingData is undefined
 
     const totalQuantity = cartDetails.reduce((total, item) => total + item.quantity, 0);
     const totalOGPrice = cartDetails.reduce((total, item) => total + (item.quantity * item.price.mrp), 0);
@@ -35,7 +34,7 @@ const OrderSummary = ({ handleNext, handleBack }) => {
     return (
         <React.Fragment>
             <Typography variant="h6" sx={{ fontWeight: 700 }} gutterBottom>
-                Order summary
+                Order Summary
             </Typography>
             {productID ?
                 <React.Fragment>
@@ -43,25 +42,23 @@ const OrderSummary = ({ handleNext, handleBack }) => {
                         <ListItem sx={{ py: 1, px: 0 }}>
                             <ListItemText primary={productDetailsCart.productName} secondary={`Quantity: ${productDetailsCart.quantity}`} />
                             <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-                                {`₹${productDetailsCart.price && productDetailsCart.price.mrp * productDetailsCart.quantity}`}
+                                {`₹${productDetailsCart.price?.mrp * productDetailsCart.quantity}`} {/* bug fix*/}
                             </Typography>
                         </ListItem>
                         <ListItem sx={{ py: 1, px: 0 }}>
                             <ListItemText primary="Discount" />
                             <Typography variant="subtitle1" sx={{ color: "green" }}>
-                                ₹{productDetailsCart.price && productDetailsCart.price.mrp - productDetailsCart.price.cost}
+                                ₹{productDetailsCart.price?.mrp - productDetailsCart.price?.cost} {/* bug fix */}
                             </Typography>
                         </ListItem>
                         <ListItem sx={{ py: 1, px: 0 }}>
                             <ListItemText primary="Shipping" />
-                            <Typography variant="body2">
-                                Free
-                            </Typography>
+                            <Typography variant="body2">Free</Typography>
                         </ListItem>
                         <ListItem sx={{ py: 1, px: 0 }}>
                             <ListItemText primary="Total Amount" />
                             <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-                                ₹{productDetailsCart.price && productDetailsCart.price.cost * productDetailsCart.quantity}
+                                ₹{productDetailsCart.price?.cost * productDetailsCart.quantity} {/* bug fix */}
                             </Typography>
                         </ListItem>
                     </List>
@@ -70,8 +67,8 @@ const OrderSummary = ({ handleNext, handleBack }) => {
                             <Typography variant="h6" gutterBottom sx={{ mt: 2, fontWeight: 700 }}>
                                 Shipping
                             </Typography>
-                            <Typography gutterBottom>{shippingData.city},{shippingData.state},{shippingData.country}</Typography>
-                            <Typography gutterBottom>{shippingData.city},{shippingData.state},{shippingData.country}</Typography>
+                            <Typography gutterBottom>{shippingData.name}</Typography> {/* bug fix: Show the correct shipping name */}
+                            <Typography gutterBottom>{shippingData.city}, {shippingData.state}, {shippingData.country}</Typography>
                         </Grid>
                     </Grid>
                 </React.Fragment>
@@ -93,14 +90,12 @@ const OrderSummary = ({ handleNext, handleBack }) => {
                         <ListItem sx={{ py: 1, px: 0 }}>
                             <ListItemText primary="Discount" />
                             <Typography variant="subtitle1" sx={{ color: "green" }}>
-                                ₹{totalamount - totalNewPrice}
+                                ₹{totalOGPrice - totalNewPrice} {/* bug fix: Correct discount calculation */}
                             </Typography>
                         </ListItem>
                         <ListItem sx={{ py: 1, px: 0 }}>
                             <ListItemText primary="Shipping" />
-                            <Typography variant="body2">
-                                Free
-                            </Typography>
+                            <Typography variant="body2">Free</Typography>
                         </ListItem>
                         <ListItem sx={{ py: 1, px: 0 }}>
                             <ListItemText primary="Total Amount" />
@@ -114,8 +109,8 @@ const OrderSummary = ({ handleNext, handleBack }) => {
                             <Typography variant="h6" gutterBottom sx={{ mt: 2, fontWeight: 700 }}>
                                 Shipping
                             </Typography>
-                            <Typography gutterBottom>{currentUser.name}</Typography>
-                            <Typography gutterBottom>{shippingData.city},{shippingData.state},{shippingData.country}</Typography>
+                            <Typography gutterBottom>{currentUser.name}</Typography> {/* bug fix: Show the correct shipping name */}
+                            <Typography gutterBottom>{shippingData.city}, {shippingData.state}, {shippingData.country}</Typography>
                         </Grid>
                     </Grid>
                 </React.Fragment>
@@ -126,7 +121,7 @@ const OrderSummary = ({ handleNext, handleBack }) => {
                 </Button>
                 <Button
                     variant="contained"
-                    onClick={handleBack}
+                    onClick={handleNext}
                     sx={{ mt: 3, ml: 1 }}
                 >
                     Next
@@ -136,4 +131,4 @@ const OrderSummary = ({ handleNext, handleBack }) => {
     );
 }
 
-export default OrderSummary
+export default OrderSummary;

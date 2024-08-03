@@ -74,8 +74,8 @@ const ShippingPage = ({ handleNext, profile }) => {
     } else {
       newErrors.country = '';
     }
-
-    if (formData.pinCode.trim() === '' || isNaN(formData.pinCode) && formData.pinCode.length == 6) {
+    // bug 
+    if (formData.pinCode.trim() === '' || isNaN(formData.pinCode) || formData.pinCode.length !== 6) {
       newErrors.pinCode = 'Pin Code is required and should be a 6-digit number';
     } else {
       newErrors.pinCode = '';

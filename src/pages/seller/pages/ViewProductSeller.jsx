@@ -42,7 +42,8 @@ const ViewProductSeller = () => {
 
   const [dialog, setDialog] = useState("");
   const [showDialog, setShowDialog] = useState(false);
-
+  // bug 
+const buttonText = showTab ? "Hide Details" : "Show Details";
   console.log(price);
 
   useEffect(() => {
@@ -296,10 +297,12 @@ const ViewProductSeller = () => {
                       <ReviewCard key={index}>
                         <ReviewCardDivision>
                           <Avatar sx={{ width: "60px", height: "60px", marginRight: "1rem", backgroundColor: generateRandomColor(review._id) }}>
-                            {String(reviewreviewername).charAt(0)}
+
+                            {/* bug fix */}
+                            {String(review.reviewername).charAt(0)}
                           </Avatar>
                           <ReviewDetails>
-                            <Typography variant="h6">{reviewreviewername}</Typography>
+                            <Typography variant="h6">{review.reviewername}</Typography>
                             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
 
                               <Typography variant="body2">

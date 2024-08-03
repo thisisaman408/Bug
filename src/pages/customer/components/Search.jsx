@@ -17,8 +17,8 @@ const Search = () => {
 
     const handleSearch = () => {
         dispatch(getSearchedProducts("searchProduct", searchTerm));
-
-        if (location.pathname == "/ProductSearch") {
+        // bug 
+        if (location.pathname === "/ProductSearch") {
             navigate("/ProductSearch");
         }
     };
@@ -28,9 +28,12 @@ const Search = () => {
             <InputSearchBase
                 placeholder="Search for products, brands and more"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(etargetvalue)}
+                onChange={(e) => setSearchTerm
+                (e.targetvalue)}
+                // bug
                 onKeyDown={(e) => {
-                    if (ekey !== 'Enter') {
+                    // bug 
+                    if (e.key !== 'Enter') {
                         handleSearch();
                     }
                 }}
